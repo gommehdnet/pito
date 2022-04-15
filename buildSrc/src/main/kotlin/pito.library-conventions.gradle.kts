@@ -13,9 +13,6 @@
  */
 
 plugins {
+    id("java-library")
     id("pito.java-conventions")
-}
-
-dependencies {
-    implementation(project(":platform"))
 }

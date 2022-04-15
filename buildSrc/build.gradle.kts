@@ -11,11 +11,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  */
-
 plugins {
-    id("pito.java-conventions")
+   `kotlin-dsl`
 }
 
-dependencies {
-    implementation(project(":platform"))
+repositories {
+   // for kotlin-dsl plugin
+   gradlePluginPortal()
 }

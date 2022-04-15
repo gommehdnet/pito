@@ -1,15 +1,8 @@
 plugins {
-    groovy
-    `java-library`
-}
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
-    }
+    id("pito.library-conventions")
 }
 
 dependencies {
-    api("org.ow2.asm", "asm", "9.1")
+    api("org.ow2.asm:asm:9.1")
 }
 

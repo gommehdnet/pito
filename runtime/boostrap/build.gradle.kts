@@ -1,5 +1,5 @@
 plugins {
-    java
+    id("pito.java-conventions")
 }
 
 dependencies {
