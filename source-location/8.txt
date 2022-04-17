@@ -1,0 +1,2 @@
+BUKKIT_MEMBERS https://hub.spigotmc.org/stash/projects/SPIGOT/repos/builddata/raw/mappings/bukkit-1.8.6-members.csrg?at=16282cac77b18aca195bb6cab1ef8055c860e21d
+BUKKIT https://hub.spigotmc.org/stash/projects/SPIGOT/repos/builddata/raw/mappings/bukkit-1.8.8-cl.csrg?at=edb83b57eae2a26f058276ba19babda5a5acac1b
