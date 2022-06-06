@@ -1,5 +1,3 @@
-import org.gradle.language.nativeplatform.internal.Dimensions
-
 /*
  * Copyright 2022 IndieLemon GmbH & Co. KG
  *
@@ -15,13 +13,6 @@ import org.gradle.language.nativeplatform.internal.Dimensions
  */
 
 plugins {
-    id("pito.application-conventions")
-}
-
-application {
-    mainClass.set("net.gommehd.pito.generator.Generator")
-}
-
-dependencies {
-    implementation(project(":platform"))
+    id("application")
+    id("pito.java-conventions")
 }
