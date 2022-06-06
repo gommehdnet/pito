@@ -17,8 +17,10 @@ package net.gommehd.pito.platform.source;
 /**
  * @author David (_Esel)
  */
-public enum MappingType {
-    MOJANG,
-    BUKKIT,
-    BUKKIT_MEMBERS
+public enum VersionAttribute {
+    MAPPING_MOJANG,
+    MAPPING_BUKKIT,
+    MAPPING_BUKKIT_MEMBERS,
+    BUILD_TOOLS_VERSION,
+    BUILD_TOOLS_JDK
 }

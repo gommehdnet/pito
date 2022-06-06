@@ -32,36 +32,40 @@ import lombok.ToString;
 public class Source {
     @Getter
     private final String name;
-    private final Map<MappingType, String> urls = new HashMap<>();
+    private final Map<VersionAttribute, String> attributes = new HashMap<>();
 
     public Source(File file) {
         name = nameFromFile(file.getName());
         forEachMapping(file, (type, url) -> {
-            urls.put(MappingType.valueOf(type), url);
+            attributes.put(VersionAttribute.valueOf(type), url);
         });
     }
 
-    private File tempFile(MappingType type) {
+    private File tempFile(VersionAttribute type) {
         return new File(".work", name + "-" + type.name());
     }
 
     @SneakyThrows
-    private File ensureDownloaded(MappingType type) {
+    private File ensureDownloaded(VersionAttribute type) {
         File file = tempFile(type);
         if (!file.exists()) {
-            InputStream in = new URL(urls.get(type)).openStream();
+            InputStream in = new URL(attributes.get(type)).openStream();
             Files.copy(in, tempFile(type).toPath());
         }
         return file;
     }
 
-    public Map<String, String> mappings(MappingType type) {
+    public String attribute(VersionAttribute type) {
+        return attributes.get(type);
+    }
+
+    public Map<String, String> mappings(VersionAttribute type) {
         Map<String, String> mapping = new HashMap<>();
         forEachMapping(ensureDownloaded(type), mapping::put);
         return mapping;
     }
 
-    public Map<String, String> reverseMappings(MappingType type) {
+    public Map<String, String> reverseMappings(VersionAttribute type) {
         Map<String, String> mapping = new HashMap<>();
         forEachMapping(ensureDownloaded(type), (s, s2) -> mapping.put(s2, s));
         return mapping;

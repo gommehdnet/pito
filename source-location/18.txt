@@ -1,2 +1,4 @@
-MOJANG https://launcher.mojang.com/v1/objects/a661c6a55a0600bd391bdbbd6827654c05b2109c/client.txt
-BUKKIT https://hub.spigotmc.org/stash/projects/SPIGOT/repos/builddata/raw/mappings/bukkit-1.18.2-cl.csrg?at=refs%2Fheads%2Fmaster
+MAPPING_MOJANG https://launcher.mojang.com/v1/objects/a661c6a55a0600bd391bdbbd6827654c05b2109c/client.txt
+MAPPING_BUKKIT https://hub.spigotmc.org/stash/projects/SPIGOT/repos/builddata/raw/mappings/bukkit-1.18.2-cl.csrg?at=refs%2Fheads%2Fmaster
+BUILD_TOOLS_VERSION 1.18.2
+BUILD_TOOLS_JDK 17

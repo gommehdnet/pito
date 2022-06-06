@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
-import net.gommehd.pito.platform.source.MappingType;
+import net.gommehd.pito.platform.source.VersionAttribute;
 import net.gommehd.pito.platform.source.Source;
 
 /**
@@ -39,7 +39,7 @@ public class BukkitMappings {
 
     public BukkitMappings(Source source) {
         this.source = source;
-        rawMapping = source.reverseMappings(MappingType.BUKKIT);
+        rawMapping = source.reverseMappings(VersionAttribute.MAPPING_BUKKIT);
         mapping = new HashMap<>(rawMapping);
         mapping.forEach((s, s2) -> rawMappingReverse.put(s2, s));
         sourceHasPackages = rawMapping.keySet().stream().anyMatch(s -> s.contains("/")
