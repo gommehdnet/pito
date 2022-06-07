@@ -32,11 +32,18 @@ public class BuildTool {
 
     public BuildTool(File directory) throws IOException {
         this.jar = new File(directory, "BuildTools.jar");
-        InputStream in = new URL(URL).openStream();
-        Files.copy(in, jar.toPath());
+        if (!jar.exists()) {
+            InputStream in = new URL(URL).openStream();
+            Files.copy(in, jar.toPath());
+        }
     }
 
-    public void run(Source source) throws IOException, InterruptedException {
+    public File run(Source source) throws IOException, InterruptedException {
+        String rev = source.attribute(VersionAttribute.BUILD_TOOLS_VERSION);
+        File output = new File(jar.getParentFile(), "craftbukkit-" + rev + ".jar");
+        if (output.exists()) {
+            return output;
+        }
         String jdk = System.getProperty("bt_jdk_" + source.attribute(VersionAttribute.BUILD_TOOLS_JDK), "java");
         Process proc = new ProcessBuilder(jdk,
             "-jar",
@@ -45,12 +52,16 @@ public class BuildTool {
             //"--generate-docs",
             //"--generate-source",
             //"--output-dir", jar.getParent(),
-            "--rev", source.attribute(VersionAttribute.BUILD_TOOLS_VERSION))
+            "--rev", rev)
             .directory(jar.getParentFile())
             .inheritIO()
             .start();
         if (proc.waitFor() != 0) {
             throw new IllegalArgumentException("BuildTools failed: " + proc.exitValue());
         }
+        if (!output.exists()) {
+            throw new IllegalArgumentException("Output not found");
+        }
+        return output;
     }
 }

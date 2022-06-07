@@ -12,16 +12,15 @@
  * Lesser General Public License for more details.
  */
 
-plugins {
-    id("pito.application-conventions")
-}
+package net.gommehd.pito.generator.classname.rule;
 
-application {
-    mainClass.set("net.gommehd.pito.generator.Generator")
-}
+import net.gommehd.pito.generator.jar.CraftBukkitJar;
 
-dependencies {
-    implementation(project(":platform"))
-    implementation("org.ow2.asm:asm-tree:9.3")
-    implementation("org.ow2.asm:asm-commons:9.3")
+/**
+ * @author David (_Esel)
+ */
+public interface ClassNameRule {
+    void register(CraftBukkitJar serverJar);
+
+    String map(String current);
 }

@@ -12,52 +12,50 @@
  * Lesser General Public License for more details.
  */
 
-package net.gommehd.pito.generator.classname;
+package net.gommehd.pito.generator.classname.rule;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import net.gommehd.pito.generator.jar.CraftBukkitJar;
 
 /**
  * @author David (_Esel)
  */
-public class PackageDetector {
+public class MinecraftRule implements ClassNameRule {
     private final Map<String, String> captured = new HashMap<>();
     private final Set<String> collision = new HashSet<>();
-    private final Set<BukkitMappings> noPackages = new HashSet<>();
+
+    @Override
+    public void register(CraftBukkitJar serverJar) {
+        if (serverJar.fullPackageNames()) {
+            for (String rawName : serverJar.names()) {
+                capture(rawName);
+            }
+        }
+    }
+
+    @Override
+    public String map(String current) {
+        String replacement = captured.get(simpleFromFully(current));
+        if (replacement != null) {
+            current = replacement;
+        }
+        return current;
+    }
 
     private void capture(String name) {
         String className = simpleFromFully(name);
         if (collision.contains(className)) {
             return;
         }
+        System.out.println("capture: " + className);
         String collision = captured.put(className, name);
         if (collision != null && !collision.equals(name)) {
             this.collision.add(className);
             System.out.println("Name collision for " + className + " a=" + collision + " b=" + name);
             captured.remove(className);
-        }
-    }
-
-    public void fix() {
-        for (BukkitMappings noPackage : noPackages) {
-            for (String rawName : noPackage.rawNames()) {
-                String replacement = captured.get(simpleFromFully(rawName));
-                if (replacement != null) {
-                    noPackage.changeMapping(rawName, replacement);
-                }
-            }
-        }
-    }
-
-    public void inspect(BukkitMappings mappings) {
-        if (!mappings.sourceHasPackages()) {
-            noPackages.add(mappings);
-            return;
-        }
-        for (String rawName : mappings.rawNames()) {
-            capture(rawName);
         }
     }
 

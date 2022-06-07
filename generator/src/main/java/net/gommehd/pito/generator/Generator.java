@@ -16,14 +16,9 @@ package net.gommehd.pito.generator;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import net.gommehd.pito.generator.classname.BukkitMappings;
-import net.gommehd.pito.generator.classname.PackageDetector;
+import net.gommehd.pito.generator.classname.RuleRegistry;
 import net.gommehd.pito.generator.jar.BuildTool;
+import net.gommehd.pito.generator.jar.CraftBukkitJar;
 import net.gommehd.pito.platform.source.Source;
 import net.gommehd.pito.platform.source.Sources;
 
@@ -33,28 +28,17 @@ import net.gommehd.pito.platform.source.Sources;
 public class Generator {
     public static void main(String[] args) throws IOException, InterruptedException {
         File workDirectory = new File(".work");
-        Files.walk(workDirectory.toPath())
-            .sorted(Comparator.reverseOrder())
-            .map(Path::toFile)
-            .forEach(File::delete);
-
-        workDirectory.delete();
         workDirectory.mkdir();
-        PackageDetector packageDetector = new PackageDetector();
-        List<BukkitMappings> mappingsList = new ArrayList<>();
+
         Sources sources = new Sources(new File("source-location"));
         BuildTool buildTool = new BuildTool(workDirectory);
+        RuleRegistry ruleRegistry = new RuleRegistry();
         for (Source source : sources.sources()) {
-            buildTool.run(source);
-            BukkitMappings mappings = new BukkitMappings(source);
-            packageDetector.inspect(mappings);
-            mappingsList.add(mappings);
+            File serverJar = buildTool.run(source);
+            System.out.println("reading: " + serverJar);
+            CraftBukkitJar jar = new CraftBukkitJar(serverJar);
+            ruleRegistry.register(jar);
         }
-        packageDetector.fix();
-        for (BukkitMappings mappings : mappingsList) {
-            System.out.println(mappings.source());
-            System.out.println(mappings.mapping());
-        }
-
+        System.out.println(ruleRegistry.classes());
     }
 }
